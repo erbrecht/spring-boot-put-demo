@@ -31,7 +31,19 @@ class PutBugApplicationTests {
 	@Test
 	void whenSubmitPut_thenReturnValue() throws Exception {
 		String putValue = "my put value";
-		mvc.perform(put("/post")
+		mvc.perform(put("/put")
+				.param("value", putValue)
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType("text/plain;charset=utf-8"))
+				.andExpect(content().string(putValue));
+	}
+
+	@Test
+	void whenSubmitPostWithHiddenPutMethod_thenReturnValue() throws Exception {
+		String putValue = "my put value";
+		mvc.perform(post("/put")
+				.param("_method", "PUT")
 				.param("value", putValue)
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED))
 				.andExpect(status().isOk())
